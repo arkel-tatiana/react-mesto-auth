@@ -1,0 +1,22 @@
+.login__signin {
+  width: 28%;
+  max-width: 358px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #FFFFFF;
+  margin: 15px auto 0 auto;
+}
+@media (max-width: 1000px){
+  .login__signin {
+    width: 51.25%;
+    margin: 15px auto 0 auto;
+  }
+}
+@media (max-width: 500px){
+  .login__signin {
+    width: 81.25%;
+    margin: 15px auto 0 auto;
+  }
+}

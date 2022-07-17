@@ -1,0 +1,20 @@
+.login__header-logo{
+  width: 142px;
+  height: 33px;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  background-image:url(./logo.svg) ;
+  object-fit: contain;
+  background-size: 100% 100%;
+  transition: opacity 0.5s ease-in-out;
+}
+.login__header-logo:hover{
+  opacity: 0;
+}
+@media (max-width: 320px){
+  .login__header-logo{
+    width: 103.74px;
+    height: 24.4px;
+  }
+}
