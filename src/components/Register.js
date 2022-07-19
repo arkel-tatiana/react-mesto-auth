@@ -4,14 +4,12 @@ import { Link, useHistory, withRouter } from 'react-router-dom';
 const Register = ({ loggedIn, onRegister }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
+    
     const history = useHistory();
   
     const handleSubmit = (e) => {
       e.preventDefault();
       onRegister({ email, password })
-        .then(() => history.push('/sing-in'))
-        .catch((err) => setMessage(err.message || 'Что-то пошло не так'));
     }
     return (
         <form className="popup__forma popup__forma_auth" onSubmit={handleSubmit} >
@@ -33,7 +31,7 @@ const Register = ({ loggedIn, onRegister }) => {
                 onChange={({ target }) => setPassword(target.value)} 
                 required />    
             <button className="popup__submit-button popup__submit-button_auth" type="submit" required>Зарегистрироваться</button>
-            <p className="popup__text popup__text_auth">Уже зарегистрированы?<Link to='/sing-in' className="popup__text popup__text_auth"> Войти</Link></p>
+            <p className="popup__text popup__text_auth">Уже зарегистрированы?<Link to='/sign-in' className="popup__text popup__text_auth"> Войти</Link></p>
         </form>
     );
 }

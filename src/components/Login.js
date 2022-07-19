@@ -18,13 +18,14 @@ const Login = ({ loggedIn, onLogin }) => {
           .then(
             () => {
               console.log("ookk");  
-              history.push('/card');
+              history.push('/main');
             })
           .then(() => resetForm())
           .catch(
             (err) => setMessage(err)
           );
     }
+    console.log(message)
     return (
         <form className="popup__forma popup__forma_auth" onSubmit={handleSubmit}>
             <h2 className="popup__title popup__title_auth">Вход</h2>

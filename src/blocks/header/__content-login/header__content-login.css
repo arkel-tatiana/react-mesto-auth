@@ -1,22 +1,10 @@
 .header__content-login{
-  display: flex;
-  justify-content: space-between;
+  display: none;
+  justify-content: flex-end;
   margin: 0 auto 0 auto;
 }
 @media (max-width: 500px){
     .header__content-login {
-      display: none;  
       flex-direction: column;
     }
-}
-.header__content-login_mobile{
-  width: 100%;
-  position: absolute;
-  top: 40px;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
-  padding-bottom: 40px;
 }

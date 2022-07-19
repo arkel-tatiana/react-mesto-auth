@@ -1,13 +1,20 @@
 import React from 'react';
 function InfoTooltip(props) {
     return (
-        <div classname={`popup popup_${props.name} ${props.isOpen ? 'popup_opened' : ''}`} >
-        <div classname="popup__container">
-          <button classname="popup__close-button" type="button" aria-label="Закрыть окно4" onClick={props.onClose}></button>
-          <form classname="popup__forma" name="profile" novalidate>
-              <div classname="popup__logoOk"></div>
-              <p classname="popup__text">Вы успешно зарегистрировались!</p>
+        <div className={`popup popup_${props.name} ${props.isOpen ? 'popup_opened' : ''}`} >
+        <div className="popup__container">
+          <button className="popup__close-button" type="button" aria-label="Закрыть окно4" onClick={props.onClose}></button>
+          <form className="popup__forma" name="profile">
+              <div className={`${props.regigedIn ? 'popup__logoOk' : 'popup__logoNo'}`}></div>
+              <p className="popup__text">
+                {props.regigedIn ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
+              </p>
+              <p className="popup__text_error" 
+                 style={props.regigedIn ? { display: "none" }  :  {display: "block" }} >
+                {props.message}
+              </p>
           </form>
+              
         </div>
       </div>    
     );

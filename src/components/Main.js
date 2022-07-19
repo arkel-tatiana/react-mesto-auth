@@ -1,11 +1,13 @@
 import avatarLogo from '../images/jakivkysto.svg'
 import React from 'react';
 import Card from './Card';
-import { Switch, Route} from 'react-router-dom'
+import { Switch, Route, useHistory} from 'react-router-dom'
 import ProtectedRoute from './ProtectedRoute';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+
 function Main(props) {
     const currentUser = React.useContext(CurrentUserContext);
+    const history = useHistory();
     return (
     <main className="content">
           <section className="profile">
@@ -39,15 +41,11 @@ function Main(props) {
           <section className="cards">
             <ul className="cards__container">
               {props.cards.map((item, i) => (
-              <Switch>
-                <Route path="/card">
                 <Card card={item}
                   onCardClick={props.onCardClick}
                   onCardLike={props.onCardLike}
                   onCardDelete={props.onCardDelete}
                   key={item._id}/>
-                </Route>
-              </Switch>  
               ))
               }
             </ul>

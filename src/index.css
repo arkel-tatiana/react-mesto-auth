@@ -8,6 +8,7 @@
 @import url("./blocks/header/__button-exit/header__button-exit.css");
 @import url("./blocks/header/__button-mobile/header__button-mobile.css");
 @import url("./blocks/header/__content-login/header__content-login.css");
+@import url("./blocks/header/__content-login/_visible/header__content-login_visible.css");
 @import url("./blocks/header/__content-login/_mobile/header__content-login_mobile.css");
 @import url("./blocks/header/__content/header__content.css");
 @import url("./blocks/header/__content/_hidden/header__content_hidden.css");
@@ -68,4 +69,7 @@
 @import url("./blocks/popup/__input/_auth/popup__input_auth.css");
 @import url("./blocks/popup/__submit-button/_auth/popup__submit-button_auth.css");
 @import url("./blocks/popup/__text/popup__text.css");
-@import url("./blocks/popup/__text/_auth/popup__text_auth.css")
+@import url("./blocks/popup/__text/_auth/popup__text_auth.css");
+@import url("./blocks/popup/__logoNo/popup__logoNo.css");
+@import url("./blocks/popup/__logoOk/popup__logoOk.css");
+@import url("./blocks/popup/__text/_error/popup__text_error.css");
