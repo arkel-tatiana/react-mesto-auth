@@ -8,12 +8,12 @@ import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import {api} from '../utils/Api';
 import React, { useState, useEffect } from 'react'
-import { Route, Switch, Redirect, withRouter, Link, useHistory } from 'react-router-dom';
+import { Route, Switch, Redirect, withRouter, useHistory } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
 import Register from './Register';
 import InfoTooltip from './InfoTooltip';
-import * as auth from '../auth.js';
+import * as auth from '../utils/auth.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 
@@ -33,41 +33,32 @@ const App = () => {
   const history = useHistory();
   const [userData, setUserData] = useState('');
   const [message, setMessage] = useState('');
-  
+  const [errorLogin, setErrorLogin] = useState(false);
+ 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
-    console.log(1)
       if (jwt) {
-        authorized(jwt);
+        setStatusToken(jwt);
     }
   }, [loggedIn]);
 
   useEffect(() => {
     if (loggedIn) {
-      history.push('/main');
+      history.push('/');
     }
   }, [loggedIn])
   
   useEffect(() => {
-    api.getUserData()
-    .then((res)=>{
-      setCurrentUser(res);
+    Promise.all([api.getUserData(), api.getInitialCards()])
+      .then(([resUserData, resinitialCards])=>{
+      setCurrentUser(resUserData);
+      setCards(resinitialCards);
     })
     .catch((err)=>{ 
-      console.log(`ошибка ${err}`); ; 
+      console.log(`ошибка ${err}`); 
     })
-  }, []);
-  
-  useEffect(() => {
-    api.getInitialCards()
-    .then((res)=>{
-      setCards(res);
-    })
-    .catch((err)=>{ 
-      console.log(`ошибка ${err}`); ; 
-    })
-  }, []);
-  
+  }, [loggedIn]);
+
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     api.changeLikeCardStatus(card._id, !isLiked)
@@ -180,10 +171,9 @@ const App = () => {
     handleCardDelete(deletedCard);
   }
 
-  const authorized = (jwt) => {
+  const setStatusToken = (jwt) => {
     auth.checkToken(jwt)
     .then((res) => {
-      console.log(res)
       if (res) {
         setLoggedIn(true);
         setUserData(res.data.email);
@@ -191,13 +181,14 @@ const App = () => {
         setLoggedIn(false);
       }
     })
-  
+    .catch((err)=>{ 
+      console.log(`ошибка ${err}`); ; 
+    })
   }
 
   const onRegister = ({ email, password }) => {
     return auth.register(email, password)
     .then((res) => {
-    //  if (!res || res.statusCode === 400) throw new Error('Что-то пошло не так');
       setIsInfoTooltip(true);
       if (res.error) {
         setMessage(res.error);
@@ -208,6 +199,9 @@ const App = () => {
         setMessage('');
         history.push('/sign-in');
       }
+    })
+    .catch((err)=>{ 
+      console.log(`ошибка ${err}`); 
     });
   }
   
@@ -217,9 +211,16 @@ const App = () => {
         if (res.token) {
           localStorage.setItem('jwt', res.token);
           setLoggedIn(true);
-        } 
+          setErrorLogin(false);
+          history.push('/');
+        } else {
+          setErrorLogin(true);
+        };
+      })
+      .catch((err) => { 
+         console.log(`ошибка ${err}`);
       });
-  }
+  };
   
   const signOut = () => {
     localStorage.removeItem('jwt');
@@ -236,10 +237,10 @@ const App = () => {
               <Register loggedIn={loggedIn} onRegister={onRegister}/>
             </Route>
             <Route path="/sign-in">
-                <Login loggedIn={loggedIn} onLogin={onLogin} />
+                <Login loggedIn={loggedIn} onLogin={onLogin} errorLogin={errorLogin} error={'Введен некорректный email или пароль'}/>
             </Route>
             <ProtectedRoute
-              path="/main"
+              path="/"
               loggedIn={loggedIn}
               cards={cards}
               onCardLike={handleCardLike}
@@ -249,8 +250,8 @@ const App = () => {
               onEditAvatar={handleEditAvatar}
               onCardClick={handleCardClick}
               component={Main} />
-            <Route exact path="/">
-              {!loggedIn ? <Redirect to="/sign-up" loggedIn={loggedIn}/> : <Redirect to="/main" />}
+            <Route path="*">
+              <Redirect to="/sign-in" />
             </Route>
           </Switch>
           <EditProfilePopup
@@ -285,7 +286,9 @@ const App = () => {
             isOpen={isInfoTooltip}
             onClose={closeAllPopups}
             regigedIn={regigedIn}
-            message={message} />
+            message={message}
+            textRegisterOk="Вы успешно зарегистрировались!"
+            textRegisterNo="Что-то пошло не так! Попробуйте ещё раз." />
           <Footer />
       </CurrentUserContext.Provider> 
     </div>

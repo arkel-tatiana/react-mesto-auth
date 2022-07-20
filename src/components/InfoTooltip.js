@@ -1,17 +1,17 @@
 import React from 'react';
-function InfoTooltip(props) {
+function InfoTooltip( { isOpen, onClose, regigedIn, message, textRegisterOk, textRegisterNo }) {
     return (
-        <div className={`popup popup_${props.name} ${props.isOpen ? 'popup_opened' : ''}`} >
+        <div className={`popup ${isOpen ? 'popup_opened' : ''}`} >
         <div className="popup__container">
-          <button className="popup__close-button" type="button" aria-label="Закрыть окно4" onClick={props.onClose}></button>
+          <button className="popup__close-button" type="button" aria-label="Закрыть окно4" onClick={onClose}></button>
           <form className="popup__forma" name="profile">
-              <div className={`${props.regigedIn ? 'popup__logoOk' : 'popup__logoNo'}`}></div>
+              <div className={`${regigedIn ? 'popup__logoOk' : 'popup__logoNo'}`}></div>
               <p className="popup__text">
-                {props.regigedIn ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
+                {regigedIn ? textRegisterOk : textRegisterNo }
               </p>
               <p className="popup__text_error" 
-                 style={props.regigedIn ? { display: "none" }  :  {display: "block" }} >
-                {props.message}
+                 style={regigedIn ? { display: "none" }  :  {display: "block" }} >
+                {message}
               </p>
           </form>
               

@@ -73,3 +73,5 @@
 @import url("./blocks/popup/__logoNo/popup__logoNo.css");
 @import url("./blocks/popup/__logoOk/popup__logoOk.css");
 @import url("./blocks/popup/__text/_error/popup__text_error.css");
+@import url("./blocks/header/__button-mobile/_visible/header__button-mobile_visible.css");
+

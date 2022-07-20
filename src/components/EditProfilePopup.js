@@ -1,22 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react'
 import PopupWithForm from './PopupWithForm';
+import useInputChange from '../utils/useInputChange'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 function EditProfilePopup ({isOpen, onClose, onUpdateUser, onLoading}) {
     const currentUser = React.useContext(CurrentUserContext);
-    const [name, setName] = React.useState(currentUser.name);
-    const [description, setDescription] = React.useState(currentUser.about);
-    
+    const [name, setName] = useState(currentUser.name);
+    const [description, setDescription] = useState(currentUser.about);
+    const [values, setValues, handleChange] = useInputChange()
+
     React.useEffect(() => {
-        setName(currentUser.name);
-        setDescription(currentUser.about);
-      }, [currentUser]);
+     setValues({name:currentUser.name, description:currentUser.about});
+    }, [currentUser, isOpen]);
+    
     function handleSubmit(e) {
         e.preventDefault();
         onUpdateUser({
-          name,
-          about: description,
+          name: values.name,
+          about: values.description,
         });
     } 
+       
     return (
         <PopupWithForm
           name="profile"
@@ -29,15 +32,18 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser, onLoading}) {
           textButton="Сохранить"
         >
         <input className="popup__input popup__input_name_username"
-          id="username-input" name="username"
-          onChange={event => setName(event.target.value)}
+          id="username-input"
+          name="name"
+          onChange={handleChange}
           type="text"
+          value={values.name || ''}
           required
           placeholder="имя" />
         <input className="popup__input popup__input_name_userjob"
           id="userjob-input"
-          name="userjob"
-          onChange={event => setDescription(event.target.value)}
+          name="description"
+          value={values.description || ''}
+          onChange={handleChange}
           type="text"
           required
           placeholder="о себе" />
@@ -46,3 +52,8 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser, onLoading}) {
 }
 export default EditProfilePopup;
 
+//const handleChange = (event) => { 
+    //  const { name, value } = event.target
+    //  setValues((prev) => ({...prev, [name]: value
+    //  }))
+   // }

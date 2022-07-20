@@ -4,7 +4,7 @@
 }
 @media (max-width: 500px){
     .header__button-mobile {
-      display: block;
+      display: none;
       border: none;
       outline: none;
       width: 24px;

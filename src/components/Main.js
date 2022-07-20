@@ -17,7 +17,7 @@ function Main(props) {
                     type="button"
                     aria-label="Редактировать фото профиля"
                     onClick={props.onEditAvatar}>
-                      <img className="profile__avatar" src={currentUser.avatar}/>
+                      <img className="profile__avatar" alt="аватар пользователя" src={currentUser.avatar}/>
                   </button>
                   <div className="profile__info">
                       <div className="profile__title-container">

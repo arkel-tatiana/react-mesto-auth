@@ -37,5 +37,4 @@ export const checkToken = (token) => {
   .then((res) => {
     return res.json();
   })
-//  .then(res => res.json())
 }

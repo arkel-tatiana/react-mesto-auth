@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react'
 import PopupWithForm from './PopupWithForm';
+import useInputChange from '../utils/useInputChange'
 function AddPlacePopup ({isOpen, onClose, onAddPlace, onLoading}) {
-    const [newCardName, setNewCardName] = React.useState('');
-    const [newCardLink, setNewCardLink] = React.useState('');
+    const [newCardName, setNewCardName] = useState('');
+    const [newCardLink, setNewCardLink] = useState('');
+    const [values, setValues, handleChange] = useInputChange()
+    
+
+    React.useEffect(() => {
+      setValues({newCardName:'', newCardLink:''});
+    }, [isOpen]);
+
     function handleSubmit(e) {
         e.preventDefault();
         onAddPlace({
-          name: newCardName,
-          link: newCardLink
+          name: values.newCardName,
+          link: values.newCardLink
         });
     } 
+    
     return (
         <PopupWithForm
           name="cards"
@@ -21,17 +30,19 @@ function AddPlacePopup ({isOpen, onClose, onAddPlace, onLoading}) {
           textButtonLoading="Сохранение..."
           textButton="Создать"
         >  
-          <input className="popup__input popup__input_add popup__input_name_namecards"
-            onChange={event => setNewCardName(event.target.value)}
+          <input className="popup__input popup__input_name_namecards"
+            onChange={handleChange}
             id="namecards-input"
-            name="namecards"
+            name="newCardName"
+            value={values.newCardName || ''}
             type="text"
             required
             placeholder="Название"/>
-          <input className="popup__input popup__input_add popup__input_name_linkcards popup__input_placeholder"
-            onChange={event => setNewCardLink(event.target.value)}
+          <input className="popup__input popup__input_name_linkcards popup__input_placeholder"
+            onChange={handleChange}
             id="linkcards-input"
-            name="linkcards"
+            value={values.newCardLink || ''}
+            name="newCardLink"
             type="url"
             placeholder="Ссылка на картинку"
             required />
