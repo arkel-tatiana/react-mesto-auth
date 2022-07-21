@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React from 'react';
+import {Link} from 'react-router-dom';
 import useInputChange from '../utils/useInputChange'
-const Register = ({ loggedIn, onRegister }) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const history = useHistory();
+const Register = ({ onRegister }) => {
     const [values, setValues, handleChange] = useInputChange()
 
     React.useEffect(() => {
-     //   setValues({ email:'', password:'' });
+        setValues({ email:'', password:'' });
     }, []);
 
     const handleSubmit = (e) => {

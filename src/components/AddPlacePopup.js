@@ -1,9 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PopupWithForm from './PopupWithForm';
 import useInputChange from '../utils/useInputChange'
 function AddPlacePopup ({isOpen, onClose, onAddPlace, onLoading}) {
-    const [newCardName, setNewCardName] = useState('');
-    const [newCardLink, setNewCardLink] = useState('');
     const [values, setValues, handleChange] = useInputChange()
     
 

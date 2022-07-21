@@ -8,7 +8,7 @@ import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import {api} from '../utils/Api';
 import React, { useState, useEffect } from 'react'
-import { Route, Switch, Redirect, withRouter, useHistory } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
 import Register from './Register';
@@ -34,7 +34,7 @@ const App = () => {
   const [userData, setUserData] = useState('');
   const [message, setMessage] = useState('');
   const [errorLogin, setErrorLogin] = useState(false);
- 
+  
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
       if (jwt) {
@@ -44,19 +44,21 @@ const App = () => {
 
   useEffect(() => {
     if (loggedIn) {
-      history.push('/');
+       history.push('/');
     }
   }, [loggedIn])
   
   useEffect(() => {
-    Promise.all([api.getUserData(), api.getInitialCards()])
-      .then(([resUserData, resinitialCards])=>{
-      setCurrentUser(resUserData);
-      setCards(resinitialCards);
-    })
-    .catch((err)=>{ 
-      console.log(`ошибка ${err}`); 
-    })
+    if (loggedIn) {
+      Promise.all([api.getUserData(), api.getInitialCards()])
+        .then(([resUserData, resinitialCards])=>{
+        setCurrentUser(resUserData);
+        setCards(resinitialCards);
+      })
+      .catch((err)=>{ 
+        console.log(`ошибка ${err}`); 
+      })
+    }
   }, [loggedIn]);
 
   function handleCardLike(card) {
@@ -234,10 +236,10 @@ const App = () => {
        <Header loggedIn={loggedIn} userData={userData} signOut={signOut}/>
           <Switch>
             <Route path="/sign-up">
-              <Register loggedIn={loggedIn} onRegister={onRegister}/>
+              <Register onRegister={onRegister}/>
             </Route>
             <Route path="/sign-in">
-                <Login loggedIn={loggedIn} onLogin={onLogin} errorLogin={errorLogin} error={'Введен некорректный email или пароль'}/>
+                <Login onLogin={onLogin} errorLogin={errorLogin} error={'Введен некорректный email или пароль'}/>
             </Route>
             <ProtectedRoute
               path="/"

@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import useInputChange from '../utils/useInputChange'
-const Login = ({ loggedIn, onLogin, errorLogin, error }) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+const Login = ({ onLogin, errorLogin, error }) => {
     const history = useHistory();
     const [values, setValues, handleChange] = useInputChange()
 
     React.useEffect(() => {
-    //  setValues({emailLogin:'', passwordLogin:''});
+      setValues({emailLogin:'', passwordLogin:''});
     }, []);
      
     const handleSubmit = (e) => {
