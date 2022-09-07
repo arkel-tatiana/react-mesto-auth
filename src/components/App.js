@@ -52,8 +52,8 @@ const App = () => {
     if (loggedIn) {
       Promise.all([api.getUserData(), api.getInitialCards()])
         .then(([resUserData, resinitialCards])=>{
-        setCurrentUser(resUserData);
-        setCards(resinitialCards);
+        setCurrentUser(resUserData.data);
+        setCards(resinitialCards.data);
       })
       .catch((err)=>{ 
         console.log(`ошибка ${err}`); 
@@ -62,7 +62,7 @@ const App = () => {
   }, [loggedIn]);
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i === currentUser._id);
     api.changeLikeCardStatus(card._id, !isLiked)
     .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
@@ -121,7 +121,7 @@ const App = () => {
     setIsLoading(true);
     api.editUserData(formData)
     .then((res)=>{
-      setCurrentUser(res);
+      setCurrentUser(res.data);
     })
     .then(() => {
       closeAllPopups();
@@ -138,7 +138,7 @@ const App = () => {
     setIsLoading(true)
     api.editUserAvatar(formData)
     .then((res)=>{
-      setCurrentUser(res);
+      setCurrentUser(res.data);
     })
     .then((res)=>{
       closeAllPopups();
@@ -155,7 +155,7 @@ const App = () => {
     setIsLoading(true)
     api.addCardElement(formData)
     .then((res)=>{
-      setCards([res, ...cards]);
+      setCards([res.data, ...cards]);
     })
     .then(() => {
       closeAllPopups();
@@ -184,7 +184,7 @@ const App = () => {
       }
     })
     .catch((err)=>{ 
-      console.log(`ошибка ${err}`); ; 
+      console.log(`ошибка ${err}`); 
     })
   }
 
@@ -208,9 +208,12 @@ const App = () => {
   }
   
   const onLogin = ({ email, password }) => {
+    console.log(email, password)
     return auth.authorize(email, password)
       .then((res) => {
+        console.log(res)
         if (res.token) {
+          console.log(111)
           localStorage.setItem('jwt', res.token);
           setLoggedIn(true);
           setErrorLogin(false);

@@ -4,8 +4,10 @@ class Api {
     this._baseUrl = options.baseUrl;
     this._headers = options.headers
   }
+
   getInitialCards() {
     return fetch(this._baseUrl + '/cards', {
+//      credentials: 'include',
       headers: this._headers
     })
     .then(this._getResponseData)
@@ -13,6 +15,7 @@ class Api {
   addCardElement(dataValue) {
     return fetch(this._baseUrl + '/cards/', {
       method: 'POST',
+  //    credentials: 'include',
       headers: this._headers,
       body: JSON.stringify({
         name: dataValue.name,
@@ -23,6 +26,7 @@ class Api {
   };  
   deleteCardElement(idCard) {
       return fetch(this._baseUrl + '/cards/' + idCard, {
+  //    credentials: 'include',  
       method: 'DELETE',
       headers: this._headers
     })
@@ -30,6 +34,7 @@ class Api {
   };
   getUserData() {
     return fetch(this._baseUrl + '/users/me', {
+  //  credentials: 'include',  
     headers: this._headers
     })
     .then(this._getResponseData)
@@ -37,6 +42,7 @@ class Api {
   editUserData(formData) {
     return fetch(this._baseUrl + '/users/me', {
       method: 'PATCH',
+  //    credentials: 'include',
       headers: this._headers,
       body: JSON.stringify({
         name: formData.name,
@@ -48,6 +54,7 @@ class Api {
   editUserAvatar(dataValue) {
     return fetch(this._baseUrl + '/users/me/avatar', {
       method: 'PATCH',
+  //    credentials: 'include',
       headers: this._headers,
       body: JSON.stringify({
         avatar: dataValue
@@ -56,8 +63,9 @@ class Api {
       .then(this._getResponseData)
   }
   changeLikeCardStatus(idCard, status) {
-    return fetch(this._baseUrl + '/cards/likes/' + idCard, {
+    return fetch(this._baseUrl + '/cards/' + idCard + '/likes', {
       method: status ? 'PUT' : 'DELETE',
+  //    credentials: 'include',
       headers: this._headers
       })
       .then(this._getResponseData)    
@@ -70,9 +78,9 @@ class Api {
   } 
 };
 export const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-42',
+  baseUrl: 'http://api.arkel.students.nomoredomains.sbs',  // 'http://localhost:3000',
   headers: {
-    authorization: 'cb8c837c-2a8a-4df5-98d7-679ca756a7f3',
+    authorization: `Bearer ${localStorage.getItem('jwt')}`,//`Bearer ${token}`,
     'Content-Type': 'application/json'
   }
 });
